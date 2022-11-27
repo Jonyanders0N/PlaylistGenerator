@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row title-head">
+    <h2>Playlist Generate</h2>
+    <p>Create a playlist based on a song.</p>
+  </div>
+  <div class="row">
+    <form
+      style="justify-content: center"
+      [formGroup]="formSearch"
+      (ngSubmit)="loadTracks()"
+      class="form-inline"
+      action="/action_page.php"
+    >
+      <input
+        type="text"
+        formControlName="track"
+        placeholder="Enter song"
+        name="track"
+      />
+      <input
+        type="text"
+        formControlName="artist"
+        placeholder="Enter artist"
+        name="artist"
+      />
+      <select class="custom-select" formControlName="qtdTracks">
+        <option *ngFor="let qtd of qtdTracks">{{ qtd }}</option>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+<div class="row track-list">
+  <ul>
+    <li *ngFor="let track of trackModel">
+      {{ track.nameSong }} - {{ track.nameArtist }}
+      <a href="{{ track.linkYoutube }}" target="_blank"> > </a>
+    </li>
+  </ul>
+</div>
+
+<router-outlet></router-outlet>
