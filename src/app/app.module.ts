@@ -9,8 +9,7 @@ import { SearchModule } from './search/search.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SearchComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
