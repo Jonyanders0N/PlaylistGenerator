@@ -3,12 +3,21 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormGroupDirective,
+  NgForm,
   Validators,
 } from '@angular/forms';
 import { SearchService } from './search.service';
 import { SimilarTracks, Track, SearchVideo, DataSimilarTrack } from './SimilarTrackModel';
 import { SimilarVideo } from './SimilarVideoModel';
+import {ErrorStateMatcher} from '@angular/material/core';
 
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -21,6 +30,8 @@ export class SearchComponent {
   trackModel: SearchVideo[] = [];
   qtdTracks = [5, 10, 20]; // 5, 10, 20, 50
   qtdDefault = 5;
+
+  matcher = new MyErrorStateMatcher()
 
   constructor(private fb: FormBuilder, private searchService: SearchService) {}
 
@@ -91,5 +102,15 @@ export class SearchComponent {
         .getVideoSimilar(element.artist.name, element.name)
         .subscribe(myObserve);
     });
+  }
+
+  loadTracksTest() {
+    this.trackModel.push(
+    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""}
+    )
   }
 }

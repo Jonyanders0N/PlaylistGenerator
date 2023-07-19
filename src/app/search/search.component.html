@@ -1,42 +1,69 @@
-<div class="container">
-  <div class="row title-head">
-    <h2>Playlist Generate</h2>
-    <p>Create a playlist based on a song.</p>
-  </div>
-  <div class="row">
+<mat-grid-list cols="4" rowHeight="70px">
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <h1>Playlist Generate</h1>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <h4>Create a playlist based on a song.</h4>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="4" [rowspan]="3">
     <form
-      style="justify-content: center"
       [formGroup]="formSearch"
       (ngSubmit)="loadTracks()"
-      class="form-inline"
       action="/action_page.php"
     >
-      <input
-        type="text"
-        formControlName="track"
-        placeholder="Enter song"
-        name="track"
-      />
-      <input
-        type="text"
-        formControlName="artist"
-        placeholder="Enter artist"
-        name="artist"
-      />
-      <select class="custom-select" formControlName="qtdTracks">
-        <option *ngFor="let qtd of qtdTracks">{{ qtd }}</option>
-      </select>
-      <button type="submit">Submit</button>
+      <div style="display: flex">
+        <mat-form-field>
+          <mat-label>Song</mat-label>
+          <input
+            [errorStateMatcher]="matcher"
+            matInput
+            type="text"
+            formControlName="track"
+            placeholder="Enter song"
+            name="track"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Artist</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="artist"
+            placeholder="Enter artist"
+            name="artist"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label></mat-label>
+          <mat-select [(value)]="qtdDefault" formControlName="qtdTracks">
+            <mat-option *ngFor="let qtd of qtdTracks" [value]="qtd">{{
+              qtd
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          class="submitButtom"
+          mat-flat-button
+          color="primary"
+          aria-label="search"
+          type="submit"
+        >
+          <span>Search</span>
+        </button>
+      </div>
     </form>
-  </div>
-</div>
-<div class="row track-list">
-  <ul>
-    <li *ngFor="let track of trackModel">
-      {{ track.nameSong }} - {{ track.nameArtist }}
-      <a href="{{ track.linkYoutube }}" target="_blank"> > </a>
-    </li>
-  </ul>
-</div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="4" [rowspan]="3">
+    <mat-list>
+      <mat-list-item *ngFor="let track of trackModel">
+        {{ track.nameSong }} - {{ track.nameArtist }}
+        <a href="{{ track.linkYoutube }}" target="_blank"> > </a>
+      </mat-list-item>
+    </mat-list>
+  </mat-grid-tile>
+</mat-grid-list>
+<!-- <pre>{{ formSearch.value | json }}</pre>
+<pre>{{ this.trackModel | json }}</pre> -->
 
 <router-outlet></router-outlet>
