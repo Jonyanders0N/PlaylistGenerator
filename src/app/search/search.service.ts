@@ -23,10 +23,23 @@ export class SearchService {
     );
   }
 
+  getTrackSimilarMock(): Observable<DataSimilarTrack> {
+    return this.http.get<DataSimilarTrack>(
+      "https://e3088b26-97aa-4981-9369-e814f5817498.mock.pstmn.io/getsimilar"
+    );
+  }
+
   getVideoSimilar(artist: string, track: string): Observable<SimilarVideo> {
     return this.http.get<SimilarVideo>(
       this.youtubeApiUrl +
         `part=id&q=${artist}/${track}&type=video&maxResults=1&key=${this.configAPI.youtubeKey}`
     );
   }
+
+  getVideoSimilarMock(): Observable<SimilarVideo> {
+    return this.http.get<SimilarVideo>(
+      "https://4fe5c1dd-328d-4c02-824c-166df478fac2.mock.pstmn.io/v2/search"
+    );
+  }
+
 }

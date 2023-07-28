@@ -37,8 +37,8 @@ export class SearchComponent {
 
   ngOnInit() {
     this.formSearch = this.fb.group({
-      artist: new FormControl<string | null>('', Validators.required),
-      track: new FormControl<string | null>('', Validators.required),
+      artist: new FormControl<string | null>('pitty', Validators.required),
+      track: new FormControl<string | null>('equalize', Validators.required),
       qtdTracks: new FormControl<number | null>(null),
     });
     this.formSearch.controls['qtdTracks'].setValue(this.qtdDefault, {
@@ -47,6 +47,8 @@ export class SearchComponent {
   }
 
   loadTracks() {
+    if (!this.formSearch.valid) return;
+
     this.trackModel = [];
 
     let similartracks = {} as SimilarTracks;
@@ -62,18 +64,19 @@ export class SearchComponent {
           this.tracks = similartracks.track;
           this.loadVideos(this.tracks);
         }
-      },
+      }, 
       error: (err: Error) => console.error('Observer got an error: ' + err),
       complete: () => console.log('Observer got a complete notification'),
     };
 
     return this.searchService
       .getTrackSimilar(artist, track, qtdTracks)
+      // .getTrackSimilarMock()
       .subscribe(myObserve);
   }
 
   loadVideos(listaTracks: Track[]) {
-    listaTracks.forEach((element) => {
+    listaTracks.forEach((element, index) => {
       let similarVideos = {} as SimilarVideo;
 
       const track = {} as SearchVideo;
@@ -81,16 +84,16 @@ export class SearchComponent {
       const myObserve = {
         next: (data: SimilarVideo) => {
           similarVideos = data;
-          this.listaVideos.push(similarVideos.items[0].id.videoId);
+          this.listaVideos.push(similarVideos.items[0]?.id.videoId);
           console.log(
-            'https://www.youtube.com/watch?v=' + similarVideos.items[0].id.videoId
+            'https://www.youtube.com/watch?v=' + similarVideos.items[0]?.id.videoId
           );
 
           track.nameSong = element.artist.name;
           track.nameArtist = element.name;
           track.linkYoutube =
             'https://www.youtube.com/watch?v=' +
-            similarVideos.items[0].id.videoId;
+            similarVideos.items[0]?.id.videoId;
 
           this.trackModel.push(track);
         },
@@ -100,6 +103,7 @@ export class SearchComponent {
 
       this.searchService
         .getVideoSimilar(element.artist.name, element.name)
+        // .getVideoSimilarMock()
         .subscribe(myObserve);
     });
   }

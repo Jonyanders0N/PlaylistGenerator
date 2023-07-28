@@ -57,13 +57,13 @@
   <mat-grid-tile [colspan]="4" [rowspan]="3">
     <mat-list>
       <mat-list-item *ngFor="let track of trackModel">
-        {{ track.nameSong }} - {{ track.nameArtist }}
-        <a href="{{ track.linkYoutube }}" target="_blank"> > </a>
+        {{ track.nameSong }} - {{ track.nameArtist }}   
+        <a href="{{ track.linkYoutube }}" target="_blank">Youtube</a> 
       </mat-list-item>
     </mat-list>
   </mat-grid-tile>
 </mat-grid-list>
-<!-- <pre>{{ formSearch.value | json }}</pre>
+<!-- <pre>{{ formSearch.value | json }}</pre> 
 <pre>{{ this.trackModel | json }}</pre> -->
 
 <router-outlet></router-outlet>
