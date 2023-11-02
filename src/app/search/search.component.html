@@ -58,7 +58,8 @@
     <mat-list>
       <mat-list-item *ngFor="let track of trackModel">
         {{ track.nameSong }} - {{ track.nameArtist }}   
-        <a href="{{ track.linkYoutube }}" target="_blank">Youtube</a> 
+        <a href="{{ track.linkYoutube }}" target="_blank"><img src="../../assets/youtube.png" style="width: 30px;
+          height: 30px; position: fixed;"></a> 
       </mat-list-item>
     </mat-list>
   </mat-grid-tile>
