@@ -1,12 +1,8 @@
-<mat-grid-list cols="4" rowHeight="70px">
-  <mat-grid-tile [colspan]="4" [rowspan]="1">
-    <h1>Playlist Generate</h1>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="4" [rowspan]="1">
-    <h4>Create a playlist based on a song.</h4>
-  </mat-grid-tile>
+<div class="container">
+  <h1>Playlist Generate</h1>
+  <h4>Create a playlist based on a song.</h4>
 
-  <mat-grid-tile [colspan]="4" [rowspan]="3">
+  <div>
     <form
       [formGroup]="formSearch"
       (ngSubmit)="loadTracks()"
@@ -14,7 +10,7 @@
     >
       <div style="display: flex">
         <mat-form-field>
-          <mat-label>Song</mat-label>
+          <label>Song</label>
           <input
             [errorStateMatcher]="matcher"
             matInput
@@ -25,7 +21,7 @@
           />
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Artist</mat-label>
+          <label>Artist</label>
           <input
             matInput
             type="text"
@@ -34,14 +30,14 @@
             name="artist"
           />
         </mat-form-field>
-        <mat-form-field>
-          <mat-label></mat-label>
-          <mat-select [(value)]="qtdDefault" formControlName="qtdTracks">
-            <mat-option *ngFor="let qtd of qtdTracks" [value]="qtd">{{
+        <div>
+          <label></label>
+          <select  formControlName="qtdTracks">
+            <option *ngFor="let qtd of qtdTracks" [value]="qtd">{{
               qtd
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+            }}</option>
+          </select>
+        </div>
         <button
           class="submitButtom"
           mat-flat-button
@@ -53,17 +49,16 @@
         </button>
       </div>
     </form>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="4" [rowspan]="3">
-    <mat-list>
-      <mat-list-item *ngFor="let track of trackModel">
+  </div>
+    <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport">
+      <div *cdkVirtualFor="let track of trackModel" class="example-item">
         {{ track.nameSong }} - {{ track.nameArtist }}   
         <a href="{{ track.linkYoutube }}" target="_blank"><img src="../../assets/youtube.png" style="width: 30px;
           height: 30px; position: fixed;"></a> 
-      </mat-list-item>
-    </mat-list>
-  </mat-grid-tile>
-</mat-grid-list>
+      </div>
+    </cdk-virtual-scroll-viewport>
+</div>
+
 <!-- <pre>{{ formSearch.value | json }}</pre> 
 <pre>{{ this.trackModel | json }}</pre> -->
 

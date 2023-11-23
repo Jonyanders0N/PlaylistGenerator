@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -22,11 +22,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent {
   formSearch!: FormGroup;
-  tracks!: Track[];
-  listaVideos: string[] = [];
   trackModel: SearchVideo[] = [];
   qtdTracks = [5, 10, 20]; // 5, 10, 20, 50
   qtdDefault = 5;
@@ -52,6 +51,7 @@ export class SearchComponent {
     this.trackModel = [];
 
     let similartracks = {} as SimilarTracks;
+    let tracks = {} as Track[];
 
     const artist = this.formSearch.get('artist')?.value;
     const track = this.formSearch.get('track')?.value;
@@ -59,10 +59,12 @@ export class SearchComponent {
 
     const myObserve = {
       next: (data: DataSimilarTrack) => {
-        similartracks = data.similartracks;
         if (data !== undefined) {
-          this.tracks = similartracks.track;
-          this.loadVideos(this.tracks);
+          similartracks = data.similartracks;
+          tracks = similartracks.track;
+          
+          console.log(similartracks.track);
+          this.loadVideos(tracks);
         }
       }, 
       error: (err: Error) => console.error('Observer got an error: ' + err),
@@ -84,7 +86,6 @@ export class SearchComponent {
       const myObserve = {
         next: (data: SimilarVideo) => {
           similarVideos = data;
-          this.listaVideos.push(similarVideos.items[0]?.id.videoId);
           console.log(
             'https://www.youtube.com/watch?v=' + similarVideos.items[0]?.id.videoId
           );
@@ -96,6 +97,7 @@ export class SearchComponent {
             similarVideos.items[0]?.id.videoId;
 
           this.trackModel.push(track);
+          console.log(this.trackModel)
         },
         error: (err: Error) => console.error('Observer got an error: ' + err),
         complete: () => console.log('Observer got a complete notification'),
@@ -108,13 +110,13 @@ export class SearchComponent {
     });
   }
 
-  loadTracksTest() {
-    this.trackModel.push(
-    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
-    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
-    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
-    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
-    {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""}
-    )
-  }
+  // loadTracksTest() {
+  //   this.trackModel.push(
+  //   {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+  //   {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+  //   {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+  //   {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""},
+  //   {nameSong: "Equalize", nameArtist:"Pitty", linkYoutube:""}
+  //   )
+  // }
 }
